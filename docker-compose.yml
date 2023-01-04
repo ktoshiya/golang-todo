@@ -2,6 +2,7 @@ version: "3.9"
 services:
   app:
     image: gotodo
+    container_name: app
     build:
       args:
         - target=dev
@@ -21,6 +22,7 @@ services:
       - "18000:8080"
     depends_on:
       - "db"
+      - "redis"
   db:
     image: mysql:8.0.29
     platform: linux/amd64

@@ -5,9 +5,17 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 
 	"github.com/ktoshiya/golang-todo/config"
 )
+
+func main() {
+	if err := run(context.Background()); err != nil {
+		log.Printf("failed to terminated server: %v", err)
+		os.Exit(1)
+	}
+}
 
 func run(ctx context.Context) error {
 	cfg, err := config.New()
@@ -32,10 +40,4 @@ func run(ctx context.Context) error {
 	s := NewServer(l, mux)
 
 	return s.Run(ctx)
-}
-
-func main() {
-	if err := run(context.Background()); err != nil {
-		log.Printf("failed to terminate server: %v", err)
-	}
 }
