@@ -8,17 +8,17 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/ktoshiya/golang-todo/entity"
 	"github.com/ktoshiya/golang-todo/testutil"
 )
 
 func TestAddTask(t *testing.T) {
-	t.Parallel()
 	type want struct {
 		status  int
 		rspFile string
 	}
-	test := map[string]struct {
+	tests := map[string]struct {
 		reqFile string
 		want    want
 	}{
@@ -33,12 +33,11 @@ func TestAddTask(t *testing.T) {
 			reqFile: "testdata/add_task/bad_req.json.golden",
 			want: want{
 				status:  http.StatusBadRequest,
-				rspFile: "testdata/add_task/bad_req_rsp.json.golden",
+				rspFile: "testdata/add_task/bad_rsp.json.golden",
 			},
 		},
 	}
-
-	for n, tt := range test {
+	for n, tt := range tests {
 		tt := tt
 		t.Run(n, func(t *testing.T) {
 			t.Parallel()
@@ -57,14 +56,16 @@ func TestAddTask(t *testing.T) {
 				}
 				return nil, errors.New("error from mock")
 			}
-
 			sut := AddTask{
-				Service: moq,
+				Service:   moq,
+				Validator: validator.New(),
 			}
 			sut.ServeHTTP(w, r)
 
 			resp := w.Result()
-			testutil.AssertResponse(t, resp, tt.want.status, testutil.LoadFile(t, tt.want.rspFile))
+			testutil.AssertResponse(t,
+				resp, tt.want.status, testutil.LoadFile(t, tt.want.rspFile),
+			)
 		})
 	}
 }

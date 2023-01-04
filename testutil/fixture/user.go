@@ -12,7 +12,7 @@ import (
 func User(u *entity.User) *entity.User {
 	result := &entity.User{
 		ID:       entity.UserID(rand.Int()),
-		Name:     "budougumi" + strconv.Itoa(rand.Int())[:5],
+		Name:     "ktoshiya" + strconv.Itoa(rand.Int())[:5],
 		Password: "password",
 		Role:     "admin",
 		Created:  time.Now(),
