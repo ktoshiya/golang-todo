@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/ktoshiya/golang-todo/auth"
 	"github.com/ktoshiya/golang-todo/entity"
 	"github.com/ktoshiya/golang-todo/store"
 )
@@ -14,12 +15,12 @@ type AddTask struct {
 }
 
 func (a *AddTask) AddTask(ctx context.Context, title string) (*entity.Task, error) {
-	// id, ok := auth.GetUserID(ctx)
-	// if !ok {
-	// 	return nil, fmt.Errorf("user_id not found")
-	// }
+	id, ok := auth.GetUserID(ctx)
+	if !ok {
+		return nil, fmt.Errorf("user_id not found")
+	}
 	t := &entity.Task{
-		// UserID: id,
+		UserID: id,
 		Title:  title,
 		Status: entity.TaskStatusTodo,
 	}

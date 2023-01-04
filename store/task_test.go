@@ -4,8 +4,6 @@ import (
 	"context"
 	"testing"
 
-	// "github.com/DATA-DOG/go-sqlmock"
-
 	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/jmoiron/sqlx"
 	"github.com/ktoshiya/golang-todo/clock"
